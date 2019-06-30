@@ -1,20 +1,19 @@
 import os
-from auto_encoder import LinearAutoEncoder
+from auto_encoder import AutoEncoder
 from torch.utils.data import DataLoader
 from torchvision.datasets import MNIST
 from torch import nn, optim
 from torchvision import transforms
 from tqdm import tqdm
 from torchvision.utils import save_image
-from utils import tensor_to_img
+from utils import to_img_sigmoid
 
 batch_size = 128
-num_epochs = 20
+num_epochs = 50
 learning_rate = 1e-3
 
 img_transform = transforms.Compose([
-    transforms.ToTensor(),
-    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+    transforms.ToTensor()
 ]
 )
 
@@ -28,17 +27,20 @@ dataloader = DataLoader(dataset=dataset,
                         shuffle=True)
 
 # create model
-sllae = LinearAutoEncoder([28*28, 128])
+slnae = AutoEncoder([28*28, 128])
 criterion = nn.MSELoss()
-optimizer = optim.SGD(sllae.parameters(), lr=learning_rate)
+optimizer = optim.Adam(slnae.parameters(), 
+                       lr=learning_rate, 
+                       weight_decay=1e-5)
 
+# training
 for epoch in tqdm(range(num_epochs)):
     for data in dataloader:
         img, _ = data
         img = img.view(img.size(0), -1)
 
         # forward
-        output = sllae(img)
+        output = slnae(img)
         loss = criterion(output, img)
 
         # backward
@@ -46,8 +48,7 @@ for epoch in tqdm(range(num_epochs)):
         loss.backward()
         optimizer.step()
     print('epoch {}/{}, loss:{:.4f}'.format(epoch+1, num_epochs, loss.data))
-
-
-# save output
-pic = tensor_to_img(output.data)
-save_image(pic, './outputs/mnist/single_layer_linear_autoencoder/image_epoch_{}.png'.format(epoch))
+    if (epoch+1) % 10 == 0:
+        # save output
+        pic = to_img_sigmoid(output.data)
+        save_image(pic, './outputs/mnist/single_layer_nonlinear_autoencoder/image_epoch_{}.png'.format(epoch))
