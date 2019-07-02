@@ -9,7 +9,7 @@ from torchvision.utils import save_image
 from utils import to_img_sigmoid
 
 batch_size = 128
-num_epochs = 50
+num_epochs = 10
 learning_rate = 1e-3
 
 img_transform = transforms.Compose([
@@ -24,7 +24,7 @@ dataset = MNIST(root='./datasets/mnist/',
 
 dataloader = DataLoader(dataset=dataset,
                         batch_size=batch_size,
-                        shuffle=True)
+                        shuffle=False)
 
 # create model
 slnae = AutoEncoder([28*28, 128])
@@ -51,4 +51,5 @@ for epoch in tqdm(range(num_epochs)):
     if (epoch+1) % 10 == 0:
         # save output
         pic = to_img_sigmoid(output.data)
-        save_image(pic, './outputs/mnist/single_layer_nonlinear_autoencoder/image_epoch_{}.png'.format(epoch))
+        print(pic.shape)
+        save_image(pic, './outputs/mnist/single_layer_nonlinear_autoencoder/image_epoch_{}.png'.format(epoch), nrow=16)

@@ -25,12 +25,14 @@ dataset = MNIST(root='./datasets/mnist/',
 
 dataloader = DataLoader(dataset=dataset,
                         batch_size=batch_size,
-                        shuffle=True)
+                        shuffle=False)
 
 # create model
-sllae = LinearAutoEncoder([28*28, 128])
+sllae = LinearAutoEncoder([28*28, 10])
 criterion = nn.MSELoss()
-optimizer = optim.SGD(sllae.parameters(), lr=learning_rate)
+optimizer = optim.Adam(sllae.parameters(), 
+                       lr=learning_rate,
+                       weight_decay=1e-5)
 
 for epoch in tqdm(range(num_epochs)):
     for data in dataloader:
@@ -40,14 +42,12 @@ for epoch in tqdm(range(num_epochs)):
         # forward
         output = sllae(img)
         loss = criterion(output, img)
-
         # backward
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
     print('epoch {}/{}, loss:{:.4f}'.format(epoch+1, num_epochs, loss.data))
-
-
-# save output
-pic = tensor_to_img(output.data)
-save_image(pic, './outputs/mnist/single_layer_linear_autoencoder/image_epoch_{}.png'.format(epoch))
+    # save output
+    if (epoch+1) % 10 == 0:
+        pic = tensor_to_img(output.data)
+        save_image(pic, './outputs/mnist/single_layer_linear_autoencoder/image_epoch_{}.png'.format(epoch), nrow=16)
