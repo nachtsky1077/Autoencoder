@@ -14,6 +14,7 @@ learning_rate = 1e-3
 
 img_transform = transforms.Compose([
     transforms.ToTensor(),
+    # FIXME: why std equals to 0.5?
     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
 ]
 )
