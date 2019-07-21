@@ -25,6 +25,7 @@ def pca(raw_data_mat, k=10):
     '''
     raw_data_mat: a numpy array wish shape N x D (N: number of data samples, D: number of dimensions)
     '''
+    # FIXME: the raw_data_mat is not zero-mean
     covmat = np.matmul(np.transpose(raw_data_mat), raw_data_mat) / (raw_data_mat.shape[0] - 1)
     
     w, v = np.linalg.eig(covmat)
@@ -32,6 +33,7 @@ def pca(raw_data_mat, k=10):
     return np.real(v[:, :k])
 
 def pca_est(raw_data_mat, v):
+    # FIXME: np.matmul(raw_data_mat, V) is sufficient?
     return np.matmul(np.matmul(raw_data_mat, v), np.transpose(v))
 
 
