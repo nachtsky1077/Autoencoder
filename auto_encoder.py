@@ -8,6 +8,7 @@ class LinearAutoEncoder(nn.Module):
     def __init__(self, layer_specs):
         super(LinearAutoEncoder, self).__init__()
         
+        # FIXME: encoder and decoder ought to be not only arch-symmetric but weight-symmetric?
         encode_layers = []
         for i in range(1, len(layer_specs)):
             encode_layers.append(nn.Linear(layer_specs[i-1], layer_specs[i]))
