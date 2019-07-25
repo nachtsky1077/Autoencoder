@@ -3,7 +3,7 @@ import argparse
 from simple_autoencoder import autoencoder, get_model_by_name
 
 markers = ['.', 'v', '^', '1', 's', 'h', 'x', 's']
-colors = ['b', 'g', 'r', 'c', 'm', 'y', 'k']
+colors = ['b', 'g', 'r', 'c', 'm', 'y']
 
 # visualize a list of 2-dimensional data with label
 def visualize(data, label, savefig=False):
@@ -17,7 +17,7 @@ def visualize(data, label, savefig=False):
     i = 0
     
     for one_label in categories:
-        curr_symbol = (markers[int(one_label) // len(markers)], colors[int(one_label) % len(colors)])
+        curr_symbol = (markers[int(one_label) // len(colors)], colors[int(one_label) % len(colors)])
         points = categories[one_label]
         ax.scatter(x=points[0], y=points[1], label=one_label, marker=curr_symbol[0], c=[curr_symbol[1]] * len(points[0]))
     ax.legend()
