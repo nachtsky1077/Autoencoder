@@ -1,5 +1,6 @@
 import time
 import os
+import numpy as np
 
 def tensor_to_img(x):
     x = 0.5 * (x + 1)
@@ -20,5 +21,12 @@ def exec_time(func):
         print('Total execution time: {:10.4f} secs'.format(te-ts))
     return inner
 
-def get_model_by_name(model_name, base_path='outputs/mnist/models/'):
-    model_fu
+
+#------------------------------------------------------------------
+# Nonlinear activation utilities
+#------------------------------------------------------------------
+def sigmoid(x):
+    return 1. / (1. + np.exp(-x))
+
+def relu(x):
+    return np.max(x, 0.0)
