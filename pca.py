@@ -51,9 +51,17 @@ if __name__ == '__main__':
     parser.add_argument('-n', '--num_examples', required=True)
     parser.add_argument('-k', '--dimension', required=True)
     parser.add_argument('-v', action='store_true')
+    parser.add_argument('-l', '--show_labels')
+
     args = vars(parser.parse_args())
-    
     batch_size = 1
+    show_labels = args.get('show_labels', None)
+    try:
+        show_labels = [int(one_label) for one_label in  show_labels.split(',')]
+    except Exception as e:
+        print('Illegal argument show_labels. Set to None')
+        show_labels = None
+        
     k = int(args.get('dimension'))
     num_images = int(args.get('num_examples'))
     save_fig = args.get('v')
@@ -91,7 +99,7 @@ if __name__ == '__main__':
     
     # could only visualize 2-dimensional data
     if k == 2:
-        visualize(compress(raw_datamat_normalized, v), labels)
+        visualize(compress(raw_datamat_normalized, v), labels, show_labels=show_labels)
 
     if save_fig:
         # save some original images
