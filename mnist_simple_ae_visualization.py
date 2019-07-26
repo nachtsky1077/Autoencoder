@@ -9,7 +9,7 @@ from torchvision.datasets import MNIST
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-m', '--model', required=True)
-    parser.add_argument('-n', '--num_examples', required=True)
+    parser.add_argument('-n', '--num_examples', required=True, type=int)
     args = vars(parser.parse_args())
 
     model_name = args.get('model')
