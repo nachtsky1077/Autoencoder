@@ -91,7 +91,7 @@ def train(model, dataloader, base_epoch, num_epochs=10):
             pic = to_img(output.cpu().data)
             save_image(pic, 'outputs/mnist/mlp_img/image_{}.png'.format(epoch))
     torch.save(model.state_dict(), 'outputs/mnist/models/mnist_sim_autoencoder_epoch{}.pth'.format(epoch + base_epoch))
-    with open('outputs/mnist/models/mnist_sim_autoencoder_training_loss_epoch_{}_{}.pkl'.format(base_epoch, base_epoch + epoch - 1), 'wb') as f:
+    with open('outputs/mnist/models/mnist_sim_autoencoder_training_loss_epoch_{}_{}.pkl'.format(base_epoch, base_epoch + epoch), 'wb') as f:
         pickle.dump(losses, f)
 
 

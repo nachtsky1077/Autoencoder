@@ -30,3 +30,6 @@ def sigmoid(x):
 
 def relu(x):
     return np.maximum(x, 0.0)
+
+def tanh(x):
+    return np.tanh(x)
