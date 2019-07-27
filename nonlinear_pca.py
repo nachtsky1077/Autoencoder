@@ -12,24 +12,14 @@ import argparse
 from sklearn.preprocessing import StandardScaler
 
 def nonlinear_pca(raw_data_mat, dimensions=[20, 10, 2], nonlinear_func=sigmoid):
-    # do pca to reduce dimension to dim[0]
-    v1 = pca(raw_data_mat, dimensions[0])
-    data_mat_c1 = compress(raw_data_mat, v=v1)
-    data_mat_a1 = nonlinear_func(data_mat_c1)
-
-    # do a second layer pca to reduce dimension to dim[1] (usually dim[1]=2)
-    v2 = pca(data_mat_a1, dimensions[1])
-    data_mat_c2 = compress(data_mat_a1, v=v2)
-    data_mat_a2 = sigmoid(data_mat_c2)
-
-    if len(dimensions) == 3:
-        # do a third layer pca to reduce dimension to dim[2] (usually dim[1]=2)
-        v3 = pca(data_mat_a2, dimensions[2])
-        data_mat_c3 = compress(data_mat_a2, v=v3)
-        data_mat_a3 = sigmoid(data_mat_c3)
-        return data_mat_a3
-    else:
-        return data_mat_a3
+    input_data_mat = raw_data_mat
+    for dim in dimensions:
+        # do pca to reduce dimension
+        v = pca(input_data_mat, dim)
+        data_mat_c = compress(input_data_mat, v=v)
+        data_mat_a = nonlinear_func(data_mat_c)
+        input_data_mat = data_mat_a
+    return data_mat_a
 
 
 if __name__ == '__main__':
